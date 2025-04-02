@@ -137,10 +137,10 @@
             Outside of mathematics, my hobbies include <a href="/photography" target="_blank">photography</a>, spending time in nature, practicing Norwegian, <a href="https://github.com/kaya-arro/" target="_blank">coding</a>, playing Celtic fiddle music, and writing.
           </p>
           <p>
-            My first significant coding <a href="https://github.com/kaya-arro/sc-simplify" target="_blank">project</a>, <code>sc-simplify</code>, provides a tool for simplifying large simplicial complexes in order to accelerate homology calculations. I developed with the goal of using it to calculate the torsion parts of the homology of homogeneous FI-objects, but I think it is also well-suited to expediting the calculation of the persistence homology of large data sets.
+            My first significant coding <a href="https://github.com/kaya-arro/sc-simplify" target="_blank">project</a>, <code>sc-simplify</code>, is a tool written in Rust for simplifying large simplicial complexes in order to accelerate homology calculations. I have also written a version of the same algorithm in Python and am hoping it will be included in Sage.
           </p>
           <p>
-            You can also find the source code for this website is also available on my GitHub page.
+            You can also find the source code for <a href="https://github.com/kaya-arro/kaya-arro-site" target="_blank">this website</a> on my GitHub page.
           </p>
         </div>
         <a data-external-thumb-image="/pics/19-06-27-19-14-42+0-q-w0.avif" class="gallery-item" data-src="/pics/Plants/19-06-27-19-14-42+0-w.avif">
