@@ -1,0 +1,30 @@
+#! /bin/env fish
+
+argparse 'h/help' -- $argv
+
+help-print
+
+set web_dir "<YOUR_PROJECT_ROOT_DIRECTORY>"
+set img_src_dir "<YOUR_SOURCE_IMAGES_DIRECTORY>"
+
+path is -d $web_dir &&
+  cd $web_dir ||
+  err 'The webpage directory was not found.'
+
+path is -d $portfolio_dir ||
+  err 'The portfolio directory was not found.'
+
+rm -f failed-to-find.txt
+
+for j in site/pics/*/*-w.avif
+  set out (string replace -- -w.avif -p.jxl $j)
+  path is -f "$out" &&
+    continue
+  set o $img_src_dir/(basename $out)
+  if path is -f "$o"
+    ln $o $out 2>/dev/null
+    or cp $o $out
+  else
+    echo "$j" >> failed-to-find.txt
+  end
+end

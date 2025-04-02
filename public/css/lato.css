@@ -1,0 +1,20 @@
+/* Webfont: Lato-Light */
+@font-face {
+  font-family: 'Lato';
+  src: url('../font/Lato-Light-subset.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  text-rendering: optimizeLegibility;
+  unicode-range: U+20,U+27-29,U+2C-35,U+37,U+3A,U+40-49,U+4B-50,U+52-57,U+59-5B,U+5D,U+61-7A,U+AB,U+BB,U+D7,U+F1,U+251,U+259,U+26A,U+279,U+2C8,U+201C,U+201D,U+221E,U+2630;
+}
+/* Webfont: LatoLatin-Regular */
+@font-face {
+  font-family: 'Lato';
+  src: url('../font/LatoLatin-Regular-subset.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  text-rendering: optimizeLegibility;
+  unicode-range: U+20,U+27-29,U+2C-35,U+37,U+3A,U+40-49,U+4B-50,U+52-57,U+59-5B,U+5D,U+61-7A,U+AB,U+BB,U+D7,U+F1,U+259,U+26A,U+2C8,U+201C,U+201D,U+221E,U+2630;
+}

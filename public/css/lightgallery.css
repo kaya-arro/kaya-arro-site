@@ -1,0 +1,25 @@
+.lg-thumb-item {
+
+  border-color: black !important;
+  border-radius: 2px !important;
+  border-width: 2px !important;
+  transition: border-color linear .25s !important;
+
+  &:is(.active,:hover) {
+    border-color: var(--nav-hover-link-color) !important;
+    /* border-width: 2px !important; */
+  }
+
+}
+
+.lg-progress {
+  background-color: var(--nav-hover-link-color) !important;
+}
+
+.lg-icon:hover {
+  color: var(--nav-hover-link-color) !important;
+}
+
+.lg-thumb-outer {
+  background-color: black !important;
+}

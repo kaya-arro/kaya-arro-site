@@ -1,0 +1,104 @@
+html {
+
+  /* Header colors */
+
+  --title-text-color: #F4F4F4;
+  --white-text-color: #F0F0F0;
+  --active-page-color: #E6F;
+  --nav-hover-link-color: #B8F;
+  --gray-menu-color: #202020;
+
+  /* Body colors */
+
+  --heading-color: #80A;
+  --hr-color: #E8D0FF;
+  --link-color: #80F;
+  --visited-link-color: #B0F; /* Also used for hovered links */
+  --main-bg-color: #E4D2FF;
+
+  /* Fonts */
+
+  font-size: 18px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-style: normal;
+  font-weight: 300;
+}
+
+a {
+
+  color: var(--link-color);
+  text-decoration: none;
+  cursor: pointer;
+  text-align: left;
+  transition: color 0.1s;
+
+
+  &:hover, &:visited, h2:hover & {
+    color: var(--visited-link-color);
+  }
+
+}
+
+body {
+
+  background-color: var(--main-bg-color);
+
+  margin: 0;
+  min-height: 100vh;
+
+  header {
+
+    background-image: url('/header-bg.avif');
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-attachment: fixed;
+
+    padding: 5% 0 5% 0;
+    margin: 0;
+
+    font-size: 24pt;
+    text-align: center;
+    color: var(--title-text-color);
+    transition-duration: 500ms;
+
+    @media (max-width: 850px) {
+      font-size: 18pt;
+      background-image: url('/mobile-header-bg.avif');
+    }
+  }
+
+  #content {
+
+    background-color: white;
+    padding: 0 3.75%;
+    margin: 0 12.5%;
+    flex-grow: 1;
+    transition-duration: 500ms;
+
+    @media (max-width: 850px) {
+      margin: 0;
+    }
+
+    hr {
+
+      border: 1px solid var(--hr-color);
+
+      h2 + & {
+        margin-top: -15px;
+      }
+
+    }
+
+    h2 {
+      color: var(--heading-color);
+    }
+
+  }
+
+}

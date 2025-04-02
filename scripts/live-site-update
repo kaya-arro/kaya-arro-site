@@ -1,0 +1,30 @@
+#! /bin/env fish
+
+argparse 'b/backup' 'd/dry-run' -- $argv
+
+set web_dir "<YOUR_PROJECT_ROOT_DIRECTORY>"
+
+path is -d $web_dir ||
+  err "The website directory was not found."
+
+set main $web_dir/site
+set min $web_dir/public-min
+
+mirror-sync $main/ $min/
+
+for f in $min/**.{js,css,php}
+  minify $f -o $f
+end
+
+set -q -f _flag_d ||
+  lftp -c "
+    open <YOUR_URL>
+    user <YOUR_FTP_USERNAE> <YOUR_FTP_PASSWORD>
+    set ssl:check-hostname no
+    mirror -RepLv --ignore-time $min/ ./
+  "
+
+fclones group $web_dir/**.{avif,jpg} | fclones link
+
+set -q -f _flag_b &&
+  mirror-sync $main/ $web_dir/public-bak/

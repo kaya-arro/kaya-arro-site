@@ -1,0 +1,99 @@
+#! /bin/env fish
+
+# To do:
+# Add ICC profile management
+# Is jpegli better than avif for viewing in browser sometimes??
+
+argparse 'preset=' 'steps=' 'remake' 'keep_original' 'disp_quality=' 'thumbs_quality=' 'dl_quality=' 'h/help' 'skip_thumbs' 'skip_dl' 'skip_disp' 'just_thumbs' 'just_dl' 'just_disp' -- $argv
+
+# Print the help text
+help-print
+
+# Filter the arguments
+set argv (path filter -f (string match -- \*-p.\* $argv))
+path is $argv ||
+  err "None of your input filenames end in -p"
+
+# Set the default parameters
+set -q -f _flag_steps ||
+  set _flag_steps 5
+set -q -f _flag_preset ||
+  set _flag_preset 5
+set -q -f _flag_remake &&
+  set remake y ||
+  set remake n
+set -q -f _flag_disp_quality ||
+  set _flag_disp_quality 35
+set -q -f _flag_thumbs_quality ||
+  set _flag_thumbs_quality 42
+set -q -f _flag_dl_quality ||
+  set _flag_dl_quality 0.5
+
+# Handle the 'just' parameters
+set -q -f _flag_just_thumbs &&
+  set _flag_skip_dl &&
+  set _flag_skip_disp
+set -q -f _flag_just_dl &&
+  set _flag_skip_thumbs &&
+  set _flag_skip_disp
+set -q -f _flag_just_disp &&
+  set _flag_skip_dl &&
+  set _flag_skip_thumbs
+
+# Set the dimensions
+set maxW 4096
+set maxH 2160
+
+set baseW 350
+set baseH 200
+set maxThumbW 2335
+set maxThumbH 1800
+
+# Define the avif recipe
+function ffmpeg-avif -S -a width height quality out
+  test (math $height \* $dim[1]) -ge (math $width \* $dim[2]) &&
+    set scale (math 2 \* (math -s 0 $width / 2)):-2 ||
+    set scale -2:(math 2 \* (math -s 0 $height / 2))
+  ffmpeg -i $o -$remake -c:v libsvtav1 -preset $_flag_preset -crf $quality -vf scale=$scale $out
+end
+
+# Make the files
+for o in $argv
+
+  # Progress update
+  echo "[$(date +%T)] Making files for $(set_color -o white)$o$(set_color normal)"
+
+  # Get the dimensions of the original file
+  set dim (string split , (identify -ping -format '%w,%h' $o))
+(
+  # Define some filename-related variables
+  set name (basename $o)
+  set bigout (string replace -- -p -w (path change-extension avif $o))
+  set download (string replace -- -p -d (path change-extension jpg $o))
+
+  # Make the AVIF thumbnail files
+  set -q -f _flag_skip_thumbs ||
+    for n in (seq 0 $_flag_steps)
+      set output (string replace -- -w -w$n $bigout)
+      set thumbW (interpolate $baseW $maxThumbW $_flag_steps $n)
+      set thumbH (interpolate $baseH $maxThumbH $_flag_steps $n)
+      ffmpeg-avif $thumbW $thumbH $_flag_thumbs_quality $output
+    end
+
+  # Make the download JPEG file
+  set -q -f _flag_remake || test ! -f "$download" && not set -q -f _flag_skip_dl &&
+    magick $o -resize {$maxW}x{$maxH}\> PFM:- | cjpegli - $download --chroma_subsampling=420 -d $_flag_dl_quality --quiet
+# This command sometimes does not remember the orientation of landscape files. Look into solutions.
+# The best solution is probably to check the orientation  of an image and then pass the relevant parameter to imagemagick. Shouldn't be needed but seems to be.
+# ffmpeg -i 25-01-03-12-30-22+0-p.jxl -vf scale=-1:2160 med3.png; cjpegli med3.png 25-01-03-12-30-22+0-d.jpg --chroma_subsampling=420 -d 0.5
+
+
+  # Make the display avif file
+  set -q -f _flag_skip_disp ||
+    ffmpeg-avif $maxW $maxH $_flag_disp_quality $bigout
+
+  # Remove the original JXL file
+  set -q -f _flag_keep_original ||
+    rm $o
+
+end

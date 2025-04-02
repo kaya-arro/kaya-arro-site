@@ -1,0 +1,76 @@
+section {
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  &.right {
+    flex-direction: row-reverse;
+  }
+
+  .text, figure, & > a:has(img) {
+    height: auto;
+    padding: 3.75%;
+    margin: auto;
+    box-sizing: border-box;
+  }
+
+  .text {
+    min-width: 60%;
+  }
+
+  & > *:has(img) {
+
+    min-width: 40%;
+    text-align: center;
+
+    img {
+      height: auto;
+      max-height: 100%;
+      max-width: 100%;
+    }
+
+    figcaption {
+      text-align: center;
+    }
+
+  }
+
+}
+
+@media (max-width: 850px) {
+
+  section {
+
+    flex-wrap: wrap;
+    justify-content: center;
+
+    .text {
+      width: 100%;
+      padding: 5%;
+    }
+
+    figure {
+      width: 100%;
+      margin: 5%;
+      display: block;
+    }
+
+    & > a:has(img) {
+      width: 100%;
+      margin: 5%;
+      display: block;
+    }
+
+    img {
+      width: 100%;
+      margin: 0;
+    }
+
+    &.right {
+      flex-direction: row;
+    }
+
+  }
+
+}
